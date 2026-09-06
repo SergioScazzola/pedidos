@@ -1,0 +1,64 @@
+@if (!isloading){
+<div class="custom-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <h4 mat-dialog-title>{{operacion}}</h4>  
+    <!--form [formGroup]="formCli" class="row ml-3 mt-3 mr-10"-->     
+     <form [formGroup]="formPed" class="p-3">        
+       <div class="row g-3 mb-1">
+         <div class="col-3">
+          <mat-form-field class="w-100" appearance="fill">
+                 <mat-label>Nro</mat-label>
+                 <input matInput [readonly]="true" formControlName="nropedido" style="text-align: center;">	
+            </mat-form-field>    
+         </div>
+
+        <div class="col-5 ms-auto">
+            <mat-form-field class="w-100" appearance="fill"> 
+                <input matInput [matDatepicker]="picker" 
+                (dateChange)="onFechaChange($event)"
+                 placeholder = "Elija una fecha" formControlName="fechaalta" > 
+                <mat-datepicker-toggle  matSuffix [for]="picker" > </mat-datepicker-toggle> 
+                <mat-datepicker #picker> </mat-datepicker>  
+                <mat-hint>{{ formPed.controls['fechaalta'].value | date : "dd/MM/yyyy HH:mm"}}</mat-hint> 
+
+            </mat-form-field >
+          </div>
+        </div>
+        <!-- Segunda Fila Proveedor-->
+        <div class="row g-3 mb-1">
+         <div class="col-10">
+           <mat-form-field class="w-100" appearance="fill">
+            <mat-label>Elija un Proveedor</mat-label>
+              <mat-select  formControlName="idproveedor"
+                (selectionChange)="onSelectionChangeProveedor($event.value)">               
+                <mat-option *ngFor="let prov of this.cproveed"
+                     [value]="prov.idproveedor" >                 
+                     {{ prov.nombre }}                 
+                </mat-option>
+                
+              </mat-select>
+           </mat-form-field>
+          </div>               
+        </div>
+        <!-- Tercera Fila -->
+       <div class="row g-3 mb-1">
+          <div class="col-10">
+            <mat-form-field class="w-100" appearance="fill">
+              <mat-label>Comentarios</mat-label>
+                <input matInput selecText formControlName="coment">	
+            </mat-form-field>                   
+          </div> 
+       
+        </div>
+        
+        <div class="botonera">            
+              <button class="btn btn-sm btn-outline-primary me-5" 
+                       [disabled]="formPed.invalid || data.accion!='A'" 
+                       (click)="AgregarPedido()">Agregar</button>                                
+           
+              <button class="btn btn-sm btn-outline-secondary"                
+                       (click)="Anular()">Cancelar</button>                       
+        </div>  
+          
+    </form>
+</div>
+}

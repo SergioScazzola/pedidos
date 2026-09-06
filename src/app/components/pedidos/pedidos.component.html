@@ -1,0 +1,115 @@
+<div class="pedidos-container">
+   <div class="row">
+      <div class="col">
+        <div class="header">
+          <h4>PEDIDOS</h4>
+        </div>
+      </div>      
+      <div class="col">
+       <input #filtroInput (keyup)="aplicarFiltro(filtroInput.value)" placeholder="Filtrar por proveedor">
+      </div>          
+   
+      <div class="col-3">        
+      </div>
+      <div class="col">
+        <button class="btn btn-primary btn-sm add-button" (click)="agPedido()">
+          <i class="bi bi-plus-circle me-1"></i>Ag. Pedido
+        </button>
+      </div>
+  </div>  
+  <div class="table-container" style="overflow-x: auto">
+    <table
+      mat-table
+      class="mat-elevation-z8"
+      [dataSource]="this.dataSource"      
+    >
+      <!-- Columna ID Cliente -->
+      <ng-container matColumnDef="nropedido">
+        <th mat-header-cell *matHeaderCellDef>Nro</th>
+        <td mat-cell *matCellDef="let renPed">{{ renPed.nropedido }}</td>
+      </ng-container>
+
+      <!-- Columna Fecha -->
+      <ng-container matColumnDef="fechaup">
+        <th mat-header-cell *matHeaderCellDef class="centrado">Fecha Act</th>
+        <td mat-cell *matCellDef="let renPed">{{  renPed.fechaup | date : "dd/MM/yyyy"}}</td>
+      </ng-container>
+
+      <!-- Columna Nro.Proveedor -->
+      <ng-container matColumnDef="nroproveedor">
+        <th mat-header-cell *matHeaderCellDef>Nro.Prov</th>
+        <td mat-cell *matCellDef="let renPed">{{ renPed.nroproveedor }}</td>
+      </ng-container>
+
+      <!-- Columna Nombre de Proveedor -->
+      <ng-container matColumnDef="proveedor">
+        <th mat-header-cell *matHeaderCellDef>Proveedor</th>
+        <td mat-cell *matCellDef="let renPed">{{ renPed.proveedor }}</td>
+      </ng-container>
+
+     <!-- Columna Cant.Items -->
+      <ng-container matColumnDef="cantitems">
+        <th mat-header-cell *matHeaderCellDef>Cant. Items</th>
+        <td mat-cell *matCellDef="let renPed">{{ renPed.cantitems }}</td>
+      </ng-container>
+
+      <!-- Columna Detalle de Pedido -->
+      <ng-container matColumnDef="Det">
+        <th mat-header-cell *matHeaderCellDef>Det</th>
+        <td mat-cell *matCellDef="let renCli">
+          <div class="text-center">
+            <button
+              mat-icon-button
+              class="action-btn"
+              title="modificar cliente"
+              (click)="modificarPedido(renCli.idCliente, renCli.nombre)"
+            >
+              <i class="bi bi-card-list"></i>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Columna Modificar -->
+      <ng-container matColumnDef="M">
+        <th mat-header-cell *matHeaderCellDef>Mod</th>
+        <td mat-cell *matCellDef="let renCli">
+          <div class="text-center">
+            <button
+              mat-icon-button
+              class="action-btn"
+              title="modificar cliente"
+              (click)="modificarPedido(renCli.idCliente, renCli.nombre)"
+            >
+              <i class="bi bi-pencil-fill"></i>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Columna Borrar -->
+      <ng-container matColumnDef="B">
+        <th mat-header-cell *matHeaderCellDef>Bor</th>
+        <td mat-cell *matCellDef="let renCli">
+          <div class="text-center">
+            <button
+              mat-icon-button
+              class="action-btn"
+              title="borrar cliente"
+              (click)="borrarPedido(renCli.idCliente)"
+            >
+              <i class="bi bi-trash-fill"></i>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Definición de filas -->
+      <tr mat-header-row *matHeaderRowDef="colPedidos; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; let index; columns: colPedidos"></tr>
+    </table>
+  </div>
+</div>
+
+
+

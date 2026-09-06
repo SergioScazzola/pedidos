@@ -16,11 +16,11 @@ export class NavegadorComponent {
   ) {}
 logout(): void {
 
-   localStorage.clear();
+  localStorage.clear();
   sessionStorage.clear();
-
-  // Ejecuta la orden para cerrar la solapa del navegador
   window.close();
+  // Ejecuta la orden para cerrar la solapa del navegador
+  
   }
 
 }
