@@ -23,7 +23,7 @@
       class="mat-elevation-z8"
       [dataSource]="this.dataSource"      
     >
-      <!-- Columna ID Cliente -->
+      <!-- Columna ID Pedido -->
       <ng-container matColumnDef="nropedido">
         <th mat-header-cell *matHeaderCellDef>Nro</th>
         <td mat-cell *matCellDef="let renPed">{{ renPed.nropedido }}</td>
@@ -53,33 +53,17 @@
         <td mat-cell *matCellDef="let renPed">{{ renPed.cantitems }}</td>
       </ng-container>
 
-      <!-- Columna Detalle de Pedido -->
-      <ng-container matColumnDef="Det">
-        <th mat-header-cell *matHeaderCellDef>Det</th>
-        <td mat-cell *matCellDef="let renCli">
-          <div class="text-center">
-            <button
-              mat-icon-button
-              class="action-btn"
-              title="modificar cliente"
-              (click)="modificarPedido(renCli.idCliente, renCli.nombre)"
-            >
-              <i class="bi bi-card-list"></i>
-            </button>
-          </div>
-        </td>
-      </ng-container>
 
       <!-- Columna Modificar -->
       <ng-container matColumnDef="M">
         <th mat-header-cell *matHeaderCellDef>Mod</th>
-        <td mat-cell *matCellDef="let renCli">
+        <td mat-cell *matCellDef="let renPed">
           <div class="text-center">
             <button
               mat-icon-button
               class="action-btn"
-              title="modificar cliente"
-              (click)="modificarPedido(renCli.idCliente, renCli.nombre)"
+              title="modificar pedido"
+              (click)="modificarDetallePedido(renPed.nropedido, renPed.proveedor)"
             >
               <i class="bi bi-pencil-fill"></i>
             </button>
@@ -90,13 +74,13 @@
       <!-- Columna Borrar -->
       <ng-container matColumnDef="B">
         <th mat-header-cell *matHeaderCellDef>Bor</th>
-        <td mat-cell *matCellDef="let renCli">
+        <td mat-cell *matCellDef="let renPed">
           <div class="text-center">
             <button
               mat-icon-button
               class="action-btn"
-              title="borrar cliente"
-              (click)="borrarPedido(renCli.idCliente)"
+              title="borrar pedido"
+              (click)="borrarPedido(renPed.nropedido, renPed.proveedor)"
             >
               <i class="bi bi-trash-fill"></i>
             </button>

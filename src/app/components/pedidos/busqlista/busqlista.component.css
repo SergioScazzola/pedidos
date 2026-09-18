@@ -1,31 +1,26 @@
-/* Contenedor principal */
-.ped-container {
-  width: 100%;
-  height: calc(100vh - 70px); /* Restar altura de navbar */
-  display: flex;
-  flex-direction: column;
-  padding: 1px;
-  margin-top: 15px;
-  overflow: hidden;
+
+.custom-dialog-container {
+  background-color:lightgray;  /*quita el fondo blanco */
 }
 
-
-/* Cabecera con título y botón */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1px;
+h4 {
+    background-color:lightblue;
+    text-align: center;
 }
 
-.header h4 {
-  background-color: #b6c1dd;
-  padding: 8px 16px;
-  border-radius: 4px;
-  margin: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+.container {
+    background-color:lightgray;
+  
 
+}
+  .botonera {    
+    background-color:lightgray;
+    display: flex;
+    justify-content:space-around;
+    margin-top   : 10px;
+    margin-bottom: 5px;
+    width: 100%
+}
 .add-button {
   font-weight: 500;
   display: flex;
@@ -110,36 +105,18 @@
 /* Ancho de columnas */
 
 
-.mat-column-nropedido {
+.mat-column-codigo {
   /*padding-left: 10px !important;*/
-  width: 30px;
-  min-width: 30px;
-  max-width: 30px;
-  text-align: center;
-  white-space: nowrap;
-}
-
-
-.mat-column-nrorenglon {
- width: 20px;
-  min-width: 20px;
-  max-width: 20px;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.mat-column-proveedor
- {
- width: 80px;
-  min-width: 80px;
-  max-width: 80px;
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
   text-align: left;
   white-space: nowrap;
 }
 
-.mat-column-codigo
- {
- width: 50px;
+
+.mat-column-codbarra {
+  width: 50px;
   min-width: 50px;
   max-width: 50px;
   text-align: left;
@@ -155,7 +132,16 @@
   white-space: nowrap;
 }
 
-.mat-column-cantidad
+.mat-column-precio
+ {
+ width: 80px;
+  min-width: 80px;
+  max-width: 80px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.mat-column-iva
  {
  width: 30px;
   min-width: 30px;
@@ -163,22 +149,41 @@
   text-align: center;
   white-space: nowrap;
 }
-.mat-column-coment {
- width: 100px;
-  min-width: 100px;
-  max-width: 100px;
+
+.mat-column-unidad
+ {
+ width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  text-align: left;
   white-space: nowrap;
 }
 
+.mat-column-moneda
+ {
+ width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  text-align: left;
+  white-space: nowrap;
+}
 
+.mat-column-fechaup
+ {
+ width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  text-align: left;
+  white-space: nowrap;
+}
 
-
-/* Estilos para columnas de acción M, B */
-.mat-column-M,
-.mat-column-B
- {  
-  width: 10px;
-  text-align: center;  
+.mat-column-Sel
+ {
+ width: 20px;
+  min-width: 20px;
+  max-width: 20px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 /* Añadimos el centrado de texto 
@@ -257,4 +262,3 @@
 .centrado {
   text-align : center
 }
-

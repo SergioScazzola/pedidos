@@ -19,9 +19,10 @@ import { finalize, forkJoin, Subscription } from 'rxjs';
 
 
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { SelecTextDirective } from '../../../Directivas/selec-text.directive';
+import { SelecTextDirective } from '../../../Directivas/selectTextDirective';
 import { intCabPedido, pedidoDTO } from '../../../../entidades/pedidoDTO';
 import { proveedorDTO } from '../../../../entidades/proveedorDTO';
+import is from '@angular/common/locales/is';
 
 
 export const DATE_FORMATS : MatDateFormats = {
@@ -64,10 +65,11 @@ isloading       : boolean = true;
 operacion       : string;
 formPed         : FormGroup;
 proxPed         : number;
+pedido          : pedidoDTO;
 cproveed        : proveedorDTO[]=[];
 
 
-hoy             : Date = new Date;
+hoy             : Date = new Date();
 importeformat   : string = "";
 
 
@@ -104,10 +106,29 @@ importeformat   : string = "";
          .subscribe((data : any): void => {
                           this.cproveed = data});  
             
+         } else { //accion = "M" Modificacion de Pedido
+             var subs : Subscription;
+             subs = this.servicio.getProveedores()
+                .pipe(finalize(() => 
+                  { subs.unsubscribe();
+                    subs = this.servicio.obtenerCabPedido(this.data.nropedido)
+                      .pipe(finalize(() => 
+                        { subs.unsubscribe();
+                          this.operacion = "Modificar Pedido Nro.: "+this.data.nropedido;
+                          this.formPed.controls['nropedido'].setValue(this.data.nropedido);
+                          this.formPed.controls['fechaalta'].setValue(this.pedido.fechaalta);
+                          this.formPed.controls['idproveedor'].setValue(this.pedido.nroproveedor);    
+                          this.formPed.controls['proveedor'].setValue(this.pedido.proveedor);    
+                          this.isloading = false;   
+                          this.cdr.detectChanges(); // Forzamos la actualización sin romper el ciclo            
+                        }))
+                      .subscribe((data : any): void => {
+                          this.pedido = data});                                     
+                 }))
+         .subscribe((data : any): void => {
+                          this.cproveed = data});  
          }
-
       
-
    }
   
 
@@ -115,7 +136,8 @@ importeformat   : string = "";
      this.formPed = this.fb.group({        
       nropedido     : [0, Validators.required],
       fechaalta     : ['', Validators.required], 
-      idproveedor  : [0, Validators.required],  
+      fechaup       : [this.hoy, Validators.required],
+      idproveedor   : [0, Validators.required],  
       proveedor     : [''],   
       cantitems     : [0, Validators.required],     
       coment        : [''] 
@@ -127,9 +149,8 @@ importeformat   : string = "";
     this.formPed.controls['nropedido'].setValue(this.data.nropedido);
     this.formPed.controls['fechaalta'].setValue(this.hoy);
     this.formPed.controls['idproveedor'].setValue(0);
-    const indp = this.cproveed.findIndex(prov => prov.idproveedor === 0);
-    this.formPed.controls['proveedor'].setValue(this.cproveed[0].nombre);
-   
+    const indp = this.cproveed.findIndex(prov => prov.Idproveedor === 0);
+    this.formPed.controls['proveedor'].setValue(this.cproveed[indp].nombre);
   }
 
   mostrarHora() {
@@ -164,16 +185,35 @@ importeformat   : string = "";
   }
 
   onSelectionChangeProveedor(event : any) {
-   /* const selectedProveedor = this.cproveed.findIndex(prov => prov.nombre === event.value);
-    this.formPed.controls['nroproveedor'].setValue(this.cproveed[selectedProveedor].idproveedor);    */
+    const selectedProveedor = this.cproveed.findIndex(prov => prov.Idproveedor === event.value);
+    this.formPed.controls['proveedor'].setValue(this.cproveed[selectedProveedor].nombre);  
 }
 
 AgregarPedido(){
-  if (this.formPed.invalid) {
-    this.notiService.showNotification("Complete todos los campos obligatorios",'Aceptar','mensaje',500);  
-    return;
+  
+    var pedido : pedidoDTO = {
+        nropedido    : this.formPed.controls['nropedido'].value,
+        fechaalta    : this.formPed.controls['fechaalta'].value,
+        fechaup      : this.formPed.controls['fechaup'].value,
+        nroproveedor : this.formPed.controls['idproveedor'].value,
+        proveedor    : this.formPed.controls['proveedor'].value,
+        cantitems    : this.formPed.controls['cantitems'].value,
+        coment       : this.formPed.controls['coment'].value   
+    }
+    console.log("Pedido a agregar: ", JSON.stringify(pedido,null,2));             
+    var subscri : Subscription;
+    var resu = "";
+    subscri = this.servicio.crearPedido(pedido)  
+            .pipe(finalize(() => {   
+             this.notiService.showNotification("El Pedido Nro "+pedido.nropedido+" se ha agregado con éxito("+resu+')','Aceptar','mensaje',500); 
+                subscri.unsubscribe();
+                this.dialogRef.close({ clicked : "Alta"})
+                }))                  
+           .subscribe((data : any): void => {resu= data});   
   }
-}
+
+  
+
 
   Anular(){
     this.dialogRef.close({ clicked : "Cancelar"})

@@ -1,1 +1,135 @@
-<p>renpedido works!</p>
+@if (!isloading){
+<div class="custom-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <h4>{{ operacion }}</h4>
+
+  <form [formGroup]="formItPed" class="p-3">
+    <!-- Primera fila -->
+    <div class="row g-3 mb-1">
+      <div class="col-3">
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>Nro.Pedido</mat-label>
+          <input
+            matInput
+            readonly
+            formControlName="nropedido"
+            style="text-align: center"
+          />
+        </mat-form-field>
+      </div>
+       <div class="col-4 ms-auto">
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>Nro.Renglón</mat-label>
+          <input matInput readonly class="centrado" formControlName="nrorenglon" />
+        </mat-form-field>
+      </div>
+      </div>
+      <!-- Segunda fila -->
+       <div class="row g-3 mb-1">      
+         <div class="col-4 ms-auto">
+              <mat-checkbox 
+                [checked]="leerArtic!==0"
+                (change)="chleerArtic($event.checked)">
+                   Leer de Articulos
+              </mat-checkbox>
+            </div>
+      </div>
+      <!-- Tercera fila -->
+      <div class="row g-3 mb-1">      
+       <div class="col-12">
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>Elija un Proveedor</mat-label>
+          <mat-select  formControlName="nroproveedor"
+             [disabled]="this.cproveedores.length==null || this.cproveedores.length==0 || leerArtic==1"
+             (selectionChange)="onSelectionProv($event.value)" >
+               @for (prov of this.cproveedores; track prov.Idproveedor){
+                <mat-option [value]="prov.Idproveedor">                 
+                  {{ prov.nombre+" - "+prov.Idproveedor }}                 
+                </mat-option>
+                }
+          </mat-select>
+        </mat-form-field>
+      </div>  
+      </div>  
+    <!-- Cuarta fila -->
+    <div class="row g-3 mb-1">        
+      <div class="col-6">
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>Código</mat-label>
+          <input matInput 
+                 [readonly]="formItPed.controls['nroproveedor'].value==0 && leerArtic==0"
+                 formControlName="codigo" 
+           (blur)="modificoCodigo()"/>
+        </mat-form-field>
+      </div>
+      <div class="col-2">
+        <button
+        [disabled]="formItPed.controls['codigo'].value == ''"
+        class="btn btn-primary"       
+        (click)="BusqXCodigo()"
+      >
+        Buscar
+      </button>
+      </div>
+      <div class="col-8">
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>Descripción</mat-label>
+          <input matInput 
+                 [readonly]="formItPed.controls['nroproveedor'].value!==0"
+                 formControlName="descripcion" 
+           (blur)="modificoDescripcion()"/>
+        </mat-form-field>
+      </div>  
+       <div class="col-2">
+        <button
+        [disabled]="formItPed.controls['descripcion'].value == ''"
+        class="btn btn-primary"       
+        (click)="BusqXDescrip()"
+      >
+        Buscar
+      </button>
+      </div>     
+      </div>  
+      <!-- Quinta fila -->
+      <div class="row g-3 mb-1">      
+       <div class="col-4">
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>Cantidad</mat-label>
+          <input matInput selecText  style="text-align: right" formControlName="cantidad" />
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+         <mat-form-field class="w-100" appearance="fill">
+             <input matInput formControlName="coment" />
+             <mat-label>Comentario</mat-label>                    
+        </mat-form-field>
+      </div>     
+    </div>     
+             
+    <!-- Botonera -->
+    <div class="botonera">
+      <button
+        class="btn btn-outline-primary"
+        [disabled]="formItPed.invalid || data.accion != 'A'"
+        (click)="AgregarItemPedido()"
+      >
+        Agregar
+      </button>
+      <button
+        class="btn btn-outline-success"
+        [disabled]="formItPed.invalid || data.accion != 'M'"
+        (click)="ModificarItemPedido()"
+      >
+        Modificar
+      </button>
+      <button
+        class="btn btn-outline-secondary"
+        (click)="Anular()"
+      >
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>
+
+}
+

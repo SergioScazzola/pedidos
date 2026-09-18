@@ -40,7 +40,7 @@ export class PedidosComponent {
     cantitems    : number;  */
   
   
-  colPedidos: string[] = ["nropedido" , "fechaup", "nroproveedor", "proveedor","cantitems","Det","M","B"];
+  colPedidos: string[] = ["nropedido" , "fechaup", "nroproveedor", "proveedor","cantitems","M","B"];
   
   dataSource = new MatTableDataSource<any>();
   //private filtroInicial : string = "";
@@ -116,27 +116,14 @@ ngOnInit(){
               })
 
    }
-  modificarPedido(nrocli : number,nombre : string){      
-    const data = {
-      nrocliente : nrocli,
-      nomcli : nombre,
-      accion     : "M"
-    }       
-    const dialogConfig = new MatDialogConfig();   
-    dialogConfig.autoFocus = false;
-    dialogConfig.data = data;
-    dialogConfig.panelClass = "";
-    const dialogRef =  this.dialog.open(CabpedidoComponent, dialogConfig);
-          dialogRef.afterClosed().subscribe( // 
-          (data:any) => { if (data.clicked === 'Modi'){                   
-                 this.leerPedidos(); // refrescar                                            
-                            }})  
-  
+  modificarDetallePedido(nroped : number,nombre : string){      
+      this.router.navigate(['/detpedido',nroped,nombre]);
   }
-  borrarPedido(nrped : number){
+  borrarPedido(nrped : number,nomprov : string){
     var resu : string;
      this.sinoServicio.abrirSiNoDialogo("Confirmación",
-                              "¿ Está seguro de quiere borrar el Pedido Nro."+nrped+" ?")
+                              "¿ Está seguro de quiere borrar el Pedido Nro."+nrped+
+                              " del proveedor "+nomprov+"y todos sus items de detalle ?")
        .then(result => {
           if (result) {
               var subscri : Subscription;

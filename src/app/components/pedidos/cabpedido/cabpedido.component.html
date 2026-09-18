@@ -31,8 +31,8 @@
               <mat-select  formControlName="idproveedor"
                 (selectionChange)="onSelectionChangeProveedor($event.value)">               
                 <mat-option *ngFor="let prov of this.cproveed"
-                     [value]="prov.idproveedor" >                 
-                     {{ prov.nombre }}                 
+                     [value]="prov.Idproveedor" >                 
+                     {{ prov.nombre+" - "+prov.Idproveedor }}                 
                 </mat-option>
                 
               </mat-select>

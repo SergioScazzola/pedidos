@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { proveedorDTO} from '../entidades/proveedorDTO';
-import { articuloDTO } from '../entidades/articuloDTO';
+import { artListaDTO } from '../entidades/artListaDTO';
 import { pedidoDTO } from '../entidades/pedidoDTO';
-import { renpedidoDTO,renpedidos } from '../entidades/renpedidoDTO';
+import { renpedidoDTO } from '../entidades/renpedidoDTO';
 import { ConfigService } from './config.service';
 
 
@@ -25,22 +25,27 @@ export class PedidosService {
 
   // Llamadas a la API
 
+  
+    
+  // Articulos de Lista del proveedor
+  public getArticulosListaxCod(lista : string, codi : string){       
+      return this.http.get<artListaDTO[]>(this.apiUrl+`listasxCod?lis=`+lista+`&&cod=`+codi);    
+  }
+
+  public getArticulosListaxDesc(lista : string, desc : string){       
+      return this.http.get<artListaDTO[]>(this.apiUrl+`listasxDes?lis=`+lista+`&&des=`+desc);    
+  }
+
+  /* Articulos de ARTICULOS
   public getArticulosxCod(codi : string){   
         return this.http.get<articuloDTO[]>(this.apiUrl+`articulosxCod?pcod=`+codi);    
-  }
-    
-
-  public getArticulosListaxCod(lista : string, codi : string){       
-      return this.http.get<articuloDTO[]>(this.apiUrl+`listasxCod?lis=`+lista+`&&cod=`+codi);    
   }
 
   public getArticulosxDesc(desc : string){   
     return this.http.get<articuloDTO[]>(this.apiUrl+`articulosxDesc?desc=`+desc);    
-  }
+  }*/
  
-  public getArticulosListaxDesc(lista : string, desc : string){       
-   return this.http.get<articuloDTO[]>(this.apiUrl+`listasxDesc?lis=`+lista+`&&des=`+desc);    
-  }
+ 
 
   public getPedidos() {
      return this.http.get<pedidoDTO[]>(this.apiUrl+`pedidos`);    
@@ -50,12 +55,19 @@ export class PedidosService {
      return this.http.get<renpedidoDTO[]>(this.apiUrl+`pedidos/detalle?id=`+nrop);    
   } 
 
+  public getItemPedido(nrop : number, nritem : number){
+    return this.http.get<renpedidoDTO>(this.apiUrl+`pedidos/itpedido?idpedido=`+nrop+`&nroitem=`+nritem);    
+  }
+
   public getMaxPedidos() {
       return this.http.get<number>(this.apiUrl + `pedidos/max`);  
   }
 
-  public crearPedido(nroproveedor : number,nombprov : string){
-     return this.http.post<pedidoDTO>(this.apiUrl+`pedidos/nuevo?nroprov=`+nroproveedor+'&&nomprov='+nombprov,null);    
+public getMaxDetPedido(nroped : number){
+    return this.http.get<number>(this.apiUrl + `pedidos/maxdet?id=` + nroped);
+}
+  public crearPedido(pedido : pedidoDTO) {
+     return this.http.post<pedidoDTO>(this.apiUrl+`pedidos/nuevo`, pedido);
   }
   
   public elimPedido(idpedido: number) {
@@ -70,9 +82,7 @@ export class PedidosService {
     return this.http.post<string>(this.apiUrl+`pedidos/actualizarDet`,lrenped);    
   }
 
-  public modificarItems(lrenped : renpedidoDTO[]){    
-    return this.http.put<renpedidos>(this.apiUrl+`pedidos/modificar`,lrenped);    
-  }
+  
 
   public actualizarPedido(nrope : number,cantit : number){   
     return this.http.put<pedidoDTO>(this.apiUrl+`pedidos/actualizarCab?nrop=`+nrope+`&cantitems=`+cantit,null);  
