@@ -25,6 +25,6 @@ export interface artListaDDTO {
 
 export interface intBusqArt {
     lista   : string;
-    codi    : string;
-    desc    : string
+    Selmult : number; // 0-Simple 1-Multiple
+   
 }

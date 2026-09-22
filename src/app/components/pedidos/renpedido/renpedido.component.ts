@@ -27,7 +27,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { intRenpedido, renpedidoDTO } from '../../../../entidades/renpedidoDTO';
 import { SelecTextDirective } from '../../../Directivas/selectTextDirective';
 import { Router } from '@angular/router';
-import { intBusqArt } from '../../../../entidades/artListaDTO';
+import { artListaDDTO, intBusqArt } from '../../../../entidades/artListaDTO';
 import { BusqlistaComponent } from '../busqlista/busqlista.component';
 
 
@@ -75,6 +75,7 @@ export class RenpedidoComponent {
  formItPed    : FormGroup;
  isloading    : boolean = true;
  leerArtic    : number = 0;
+   itemSel    : artListaDDTO[]=[];
  
  constructor(    public  fb          : FormBuilder,
                   private currencyPipe: CurrencyPipe,
@@ -101,7 +102,7 @@ export class RenpedidoComponent {
             this.cproveedores      =  res2.proveed           
       
             if (this.cproveedores!==null && this.cproveedores.length>0){                  
-                this.operacion = "Agregar Item de Pedido Nro. "+this.data.nropedido; ;            
+                this.operacion = "Agregar Item al Pedido Nro. "+this.data.nropedido; ;            
                 this.prepararAlta();    
                 this.isloading = false;
                 this.cdr.detectChanges()
@@ -121,10 +122,20 @@ export class RenpedidoComponent {
             
       
             if (this.cproveedores!==null && this.cproveedores.length>0){        
-                       
+               if (this.itpedido !== null){
                 this.operacion = "Modificar Item de Pedido Nro. "+this.data.nropedido;
-               
-                
+                this.formItPed.controls['nropedido'].setValue(this.itpedido.nropedido);
+                this.formItPed.controls['nrorenglon'].setValue(this.itpedido.nrorenglon);
+                this.formItPed.controls['nroproveedor'].setValue(this.itpedido.nroproveedor);
+                this.formItPed.controls['codigo'].setValue(this.itpedido.codigo);
+                this.formItPed.controls['descripcion'].setValue(this.itpedido.descripcion);
+                this.formItPed.controls['cantidad'].setValue(this.itpedido.cantidad);
+                this.formItPed.controls['coment'].setValue(this.itpedido.coment);
+                this.isloading = false;
+                this.cdr.detectChanges()
+               } else {
+                 this.notiService.showNotification("No se encuentra el item de pedido",'Aceptar','mensaje',500);    
+               }                                        
             } else { 
               this.notiService.showNotification("No existen proveedores registrados",'Aceptar','mensaje',500);  
             }
@@ -149,7 +160,7 @@ export class RenpedidoComponent {
     this.formItPed.patchValue({
       nropedido     : this.data.nropedido,
       nrorenglon    : this.data.nrorenglon,
-      nroproveedor  : 0,
+      nroproveedor  : this.data.nroprov,
       codigo        : '',
       descripcion   : '',           
       cantidad      : 0,
@@ -173,11 +184,48 @@ modificoDescripcion(){
     if (desc!=='' && nroprov>0){}
 }
 AgregarItemPedido(){
-
+var itped : renpedidoDTO = {
+  nropedido    : this.formItPed.controls['nropedido'].value,
+  nrorenglon   : this.formItPed.controls['nrorenglon'].value,
+  nroproveedor : this.formItPed.controls['nroproveedor'].value,
+  codigo       : this.formItPed.controls['codigo'].value,
+  descripcion  : this.formItPed.controls['descripcion'].value,
+  cantidad     : this.formItPed.controls['cantidad'].value,
+  coment       : this.formItPed.controls['coment'].value,
+}
+ 
+var subs : Subscription;
+var resu = "";
+subs = this.servicio.grabarItemPedido(itped,this.data.cantit)  
+  .pipe(finalize(() => {   
+    this.notiService.showNotification("El Item de Pedido Nro "+itped.nrorenglon+" se ha agregado con éxito("+resu+')','Aceptar','mensaje',500); 
+    subs.unsubscribe();
+    this.dialogRef.close({ clicked : "Alta"})
+  }))                  
+  .subscribe((data : any): void => {resu= data});   
 }
 
-ModificarItemPedido(){
 
+ModificarItemPedido(){
+var itped : renpedidoDTO = {
+  nropedido    : this.formItPed.controls['nropedido'].value,
+  nrorenglon   : this.formItPed.controls['nrorenglon'].value,
+  nroproveedor : this.formItPed.controls['nroproveedor'].value,
+  codigo       : this.formItPed.controls['codigo'].value,
+  descripcion  : this.formItPed.controls['descripcion'].value,
+  cantidad     : this.formItPed.controls['cantidad'].value,
+  coment       : this.formItPed.controls['coment'].value,
+}
+ 
+var subs : Subscription;
+var resu = "";
+subs = this.servicio.updateItemPedido(itped)  
+  .pipe(finalize(() => {   
+    this.notiService.showNotification("El Item de Pedido Nro "+itped.nrorenglon+" ha sido modificado con éxito("+resu+')','Aceptar','mensaje',500); 
+    subs.unsubscribe();
+    this.dialogRef.close({ clicked : "Modi"})
+  }))                  
+  .subscribe((data : any): void => {resu= data});  
 }
 
 chleerArtic(checked : boolean){
@@ -189,40 +237,40 @@ chleerArtic(checked : boolean){
 
 }
 
-BusqXCodigo(){
+BusqEnLista(){
   // llama al componente "busqlista" para buscar un articulo de la lista
   const nrop = this.formItPed.controls['nroproveedor'].value;
   const indp = this.cproveedores.findIndex(p=>p.Idproveedor===nrop);
   const listaa   = this.cproveedores[indp].nomlista;
-  const codig    = this.formItPed.controls['codigo'].value;
-  const descri   = this.formItPed.controls['descripcion'].value;
+ 
   
     const datas : intBusqArt = {
       lista       : listaa,
-      codi        : codig,
-      desc        : descri
-      
+      Selmult     : 0,           
     }  
    
    
     const dialogConfig = new MatDialogConfig();   
     dialogConfig.autoFocus = false;
     dialogConfig.data = datas;
-    dialogConfig.width =  '500';         // ancho máximo de la ventana
+    dialogConfig.width =  '1000px';         // ancho máximo de la ventana
     dialogConfig.maxWidth = '95vw';      
-    dialogConfig.height   = 'auto';        // altura se ajusta al contenido
+    dialogConfig.height   = '600px';        // altura se ajusta al contenido
     dialogConfig.panelClass = 'custom-dialog-container';
     dialogConfig.disableClose =  false; // opcional según necesidad
     const dialogRef =  this.dialog.open(BusqlistaComponent, dialogConfig);
           dialogRef.afterClosed().subscribe( // 
-          (datas:any) => { if (datas.clicked === 'Acepto'){                   
-                                                                           
+          (datas:any) => { if (datas.clicked === 'Acepto' && datas.articulos){                   
+               // me devuelve solo un item -> seleccion simple
+   
+               this.formItPed.controls['codigo'].setValue(datas.articulos[0].codigo);
+               this.formItPed.controls['descripcion'].setValue(datas.articulos[0].descripcion);
+               this.isloading = false;
+               this.cdr.detectChanges()
                        }})  
 }
 
-BusqXDescrip(){
-  
-}
+
   Anular(){
     this.dialogRef.close({ clicked : "Cancelar"})
   }

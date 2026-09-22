@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { proveedorDTO } from '../../../../entidades/proveedorDTO';
 import { CurrencyPipe } from '@angular/common';
+import { artListaDDTO } from '../../../../entidades/artListaDTO';
 
 @Component({
   selector: 'app-detpedido',
@@ -42,8 +43,10 @@ export class DetpedidoComponent {
   ultitem     : number;
   dataSource = new MatTableDataSource<any>();
   nropedido   : number;
-  nroprove    : string;
+  nroprove    : number;
+  nomprov     : string;
   isloading   : boolean = true;
+
 
     constructor( private servicio       : PedidosService,              
                private   router         : Router,
@@ -62,7 +65,8 @@ export class DetpedidoComponent {
      // Extraer parámetros de la ruta
      this.rutaActiva.paramMap.subscribe((params) => {
      this.nropedido      = Number(params.get('nropedido'));      
-     this.nroprove       = params.get('nroprov')||'';
+     this.nroprove       = Number(params.get('nroprov'));
+     this.nomprov        = params.get('nombre')||'';
      
      this.leerDetallePedido(this.nropedido);
      
@@ -125,6 +129,7 @@ export class DetpedidoComponent {
     const datas : intRenpedido = {
       nropedido    : this.nropedido,
       nrorenglon   : this.ultitem+1,   
+      cantit       : this.cdetpedido==null?0:this.cdetpedido.length, // es para actualizar en el back
       nroprov      : this.nroprove,
       accion       : "A"
     }  
@@ -133,7 +138,7 @@ export class DetpedidoComponent {
     const dialogConfig = new MatDialogConfig();   
     dialogConfig.autoFocus = false;
     dialogConfig.data = datas;
-    dialogConfig.width =  '900';         // ancho máximo de la ventana
+    dialogConfig.width =  '600px';         // ancho máximo de la ventana
     dialogConfig.maxWidth = '95vw';      
     dialogConfig.height   = 'auto';        // altura se ajusta al contenido
     dialogConfig.panelClass = 'custom-dialog-container';
@@ -142,6 +147,7 @@ export class DetpedidoComponent {
           dialogRef.afterClosed().subscribe( // 
           (datas:any) => { if (datas.clicked === 'Alta'){                   
                  this.leerDetallePedido(this.nropedido); // recargar el detalle de pedido para mostrar el nuevo movimiento                                                                       
+
                        }})  
 
   }
@@ -158,7 +164,30 @@ export class DetpedidoComponent {
   }
 
 modificarItemPedido( nroped : number, nroren : number){
+   // llama al componente "renpedido" para modificar el item de pedido
+    const datas : intRenpedido = {
+      nropedido    : nroped,
+      nrorenglon   : nroren,   
+      cantit       : 0,
+      nroprov      : this.nroprove,
+      accion       : "M"
+    }  
+   
+   
+    const dialogConfig = new MatDialogConfig();   
+    dialogConfig.autoFocus = false;
+    dialogConfig.data = datas;
+    dialogConfig.width =  '600px';         // ancho máximo de la ventana
+    dialogConfig.maxWidth = '95vw';      
+    dialogConfig.height   = 'auto';        // altura se ajusta al contenido
+    dialogConfig.panelClass = 'custom-dialog-container';
+    dialogConfig.disableClose =  false; // opcional según necesidad
+    const dialogRef =  this.dialog.open(RenpedidoComponent, dialogConfig);
+          dialogRef.afterClosed().subscribe( // 
+          (datas:any) => { if (datas.clicked === 'Modi'){                   
+                 this.leerDetallePedido(nroped); // recargar el detalle de pedido para mostrar el nuevo movimiento                                                                       
 
+                       }})  
 }
 
 eliminarItemPedido( nroped : number, nroren : number){

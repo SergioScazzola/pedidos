@@ -38,7 +38,8 @@ h4 {
 /* Contenedor de la tabla */
 .table-container {
   flex: 1;
-  height: 350px;
+  margin: 20px;
+  height: 450px;
   overflow-y: auto;
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -60,7 +61,7 @@ h4 {
 .mat-mdc-header-row {
   background-color: #b6c1dd;
   height: 24px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   position: sticky;
   top: 0;
@@ -68,9 +69,12 @@ h4 {
 }
 
 .mat-mdc-row {
-  height: auto;
+ /* height: 10px;
   min-height: 10px;
-  font-size: 14px;
+  font-size: 12px;*/
+  height: auto;
+  /*min-height: 10px;*/
+  font-size: 12px !important;
   transition: background-color 0.2s ease;
 }
 
@@ -91,7 +95,7 @@ h4 {
 /* Estilos para las celdas : arriba, derecha, abajo, izquierda */
 .mat-mdc-cell,
 .mat-mdc-header-cell {
-  padding: 0;
+  padding: 5px;
 }
 
 /* Asegurar que los encabezados no se truncan */
@@ -134,9 +138,9 @@ h4 {
 
 .mat-column-precio
  {
- width: 80px;
-  min-width: 80px;
-  max-width: 80px;
+ width: 50px;
+  min-width: 50px;
+  max-width: 50px;
   text-align: right;
   white-space: nowrap;
 }
@@ -170,18 +174,18 @@ h4 {
 
 .mat-column-fechaup
  {
- width: 50px;
-  min-width: 50px;
-  max-width: 50px;
+ width: 40px;
+  min-width: 40px;
+  max-width: 40px;
   text-align: left;
   white-space: nowrap;
 }
 
-.mat-column-Sel
+.mat-column-sel
  {
- width: 20px;
-  min-width: 20px;
-  max-width: 20px;
+ width: 10px;
+  min-width: 10px;
+  max-width: 10px;
   text-align: center;
   white-space: nowrap;
 }
@@ -255,6 +259,9 @@ h4 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.rowsel {
+  background-color: aquamarine !important; 
+}
 .izq {  
   text-align : left
 }

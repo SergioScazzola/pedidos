@@ -116,8 +116,8 @@ ngOnInit(){
               })
 
    }
-  modificarDetallePedido(nroped : number,nombre : string){      
-      this.router.navigate(['/detpedido',nroped,nombre]);
+  modificarDetallePedido(nroped : number,nroprov : number,nombre : string){      
+      this.router.navigate(['/detpedido',nroped,nroprov,nombre]);
   }
   borrarPedido(nrped : number,nomprov : string){
     var resu : string;

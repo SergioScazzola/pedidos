@@ -77,11 +77,13 @@ public getMaxDetPedido(nroped : number){
 
 
 
-  public grabarItems(lrenped : renpedidoDTO[]){
-    // Actualiza también la cabecera del pedido
-    return this.http.post<string>(this.apiUrl+`pedidos/actualizarDet`,lrenped);    
+ public grabarItemPedido(itpedido : renpedidoDTO,cantit : number) {
+     return this.http.post<renpedidoDTO>(this.apiUrl+`pedidos/nuevoitem?cantit=`+cantit,itpedido);
   }
 
+public updateItemPedido(itpedido : renpedidoDTO){
+    return this.http.put<renpedidoDTO>(this.apiUrl+`pedidos/updateitem`,itpedido);  
+}
   
 
   public actualizarPedido(nrope : number,cantit : number){   

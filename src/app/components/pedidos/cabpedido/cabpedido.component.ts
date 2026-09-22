@@ -185,6 +185,7 @@ importeformat   : string = "";
   }
 
   onSelectionChangeProveedor(event : any) {
+    console.log("Valor Evento : "+event.value);
     const selectedProveedor = this.cproveed.findIndex(prov => prov.Idproveedor === event.value);
     this.formPed.controls['proveedor'].setValue(this.cproveed[selectedProveedor].nombre);  
 }

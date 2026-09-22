@@ -10,6 +10,6 @@ export const routes: Routes = [
      
   { path: 'ppal', component: NavegadorComponent },         
   { path: 'pedidos/:filtro', component: PedidosComponent },         
-  { path: 'detpedido/:nropedido/:nroprov', component: DetpedidoComponent },       
+  { path: 'detpedido/:nropedido/:nroprov/:nombre', component: DetpedidoComponent },       
   { path: '**', redirectTo: 'ppal' },         
 ];

@@ -2,7 +2,7 @@
    <div class="row">
       <div class="col">
         <div class="header">
-          <h4>PEDIDOS</h4>
+          <h4>PEDIDOS A PROVEEDORES</h4>
         </div>
       </div>      
       <div class="col">
@@ -62,8 +62,8 @@
             <button
               mat-icon-button
               class="action-btn"
-              title="modificar pedido"
-              (click)="modificarDetallePedido(renPed.nropedido, renPed.proveedor)"
+              title="modificar el detalle del pedido"
+              (click)="modificarDetallePedido(renPed.nropedido, renPed.nroproveedor,renPed.proveedor)"
             >
               <i class="bi bi-pencil-fill"></i>
             </button>

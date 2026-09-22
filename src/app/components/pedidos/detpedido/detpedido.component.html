@@ -2,11 +2,11 @@
 <div class="ped-container">
     <!-- Sección superior fija -->
     <div class="fixed-section">
-      <div class="header mt-3">
-        <h4>Detalle de Pedido</h4>   
+      <div class="header">
+        <h4>Detalle de Pedido de {{ nomprov }}</h4>   
         
         <div class="col-4">
-           <input #filtroInput (keyup)="aplicarFiltro(filtroInput.value)" placeholder="Filtrar por proveedor">
+           <input #filtroInput (keyup)="aplicarFiltro(filtroInput.value)" placeholder="Filtrar por descripción">
         </div>   
         <button 
                 mat-icon-button
@@ -123,7 +123,7 @@
   </div>
   }
   <!-- Sección inferior fija -->
-  <div class="fixed-section footer-container">
+  <div class="footer-container">
      <div class="footer">         
   </div>      
   </div>      
