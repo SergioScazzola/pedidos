@@ -4,6 +4,7 @@ import { proveedorDTO} from '../entidades/proveedorDTO';
 import { artListaDTO } from '../entidades/artListaDTO';
 import { pedidoDTO } from '../entidades/pedidoDTO';
 import { renpedidoDTO } from '../entidades/renpedidoDTO';
+import { selMultB } from '../entidades/artListaDTO';
 import { ConfigService } from './config.service';
 
 
@@ -80,6 +81,12 @@ public getMaxDetPedido(nroped : number){
  public grabarItemPedido(itpedido : renpedidoDTO,cantit : number) {
      return this.http.post<renpedidoDTO>(this.apiUrl+`pedidos/nuevoitem?cantit=`+cantit,itpedido);
   }
+
+
+  public grabarSelMultiple(selmul : selMultB) {
+     return this.http.post<selMultB>(this.apiUrl+`pedidos/grabmultiple`,selmul);
+  }
+
 
 public updateItemPedido(itpedido : renpedidoDTO){
     return this.http.put<renpedidoDTO>(this.apiUrl+`pedidos/updateitem`,itpedido);  

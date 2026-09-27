@@ -1,21 +1,26 @@
 @if (!isloading){
 <div class="custom-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
   <h4 mat-dialog-title>{{titulo}}</h4>                
-     <!-- Sección de tabla con scroll -->
-     @if (cantitems!==0) {
+     <!-- Sección de tabla con scroll -->    
       <div class="row px-4 mb-1">
-        <div class="col-auto">
-         <input #prefcodigo (blur)="ingresoCodigo(prefcodigo.value)" selecText placeholder="Buscar por codigo">
+        
+        <div class="col-4">
+         <input #prefcodigo [appSaltarFoco]="mitabla"
+                (focus)="consolear()"
+                (blur)="ingresoCodigo(prefcodigo.value)" placeholder="Buscar por codigo">
         </div>          
-        <div class="col-auto">
-         <input #txtdesc (blur)="ingresoDesc(txtdesc.value)"  
-                         selecText                    
-                          placeholder="Buscar por descripcion">
-        </div>          
-      </div>
       
+        <div class="col-4">
+         <input #txtdesc  [appSaltarFoco]="mitabla"
+                (focus)="consolear1()"
+                (blur)="ingresoDesc(txtdesc.value)"  
+                selecText                    
+                placeholder="Buscar por descripcion">
+        </div>                       
+    </div>  
+    @if (cantitems!==0) {
      <div class="table-container" style="overflow-x: auto">
-       <table
+       <table #mitabla tabindex="-1"
            mat-table
            class="mat-elevation-z8 tabla-fija"
            [dataSource]="this.dataSource">

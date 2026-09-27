@@ -17,10 +17,11 @@ export class SelecTextDirective {
 
   @HostListener('focus')
   onFocus() {
-  const inp = this.eleRef.nativeElement as HTMLInputElement;
+    const inp = this.eleRef.nativeElement as HTMLInputElement;
 
-  inp.selectionStart = 0;
-  inp.selectionEnd   = inp.value.length;
+    inp.selectionStart = 0;
+    inp.selectionEnd   = inp.value.length;
+   
 }
 }
 

@@ -75,7 +75,7 @@ export class RenpedidoComponent {
  formItPed    : FormGroup;
  isloading    : boolean = true;
  leerArtic    : number = 0;
-   itemSel    : artListaDDTO[]=[];
+ itemSel      : renpedidoDTO[]=[];
  
  constructor(    public  fb          : FormBuilder,
                   private currencyPipe: CurrencyPipe,
@@ -168,7 +168,11 @@ export class RenpedidoComponent {
     })
   }
 onSelectionProv(nroprov : number){
-  this.formItPed.controls['nroproveedor'].setValue(nroprov);
+  // this.formItPed.controls['nroproveedor'].setValue(nroprov); 
+  this.formItPed.controls['codigo'].setValue("");
+  this.formItPed.controls['descripcion'].setValue("");
+  this.isloading = false;
+  this.cdr.detectChanges()  
 
   }
 modificoCodigo(){
@@ -198,7 +202,7 @@ var subs : Subscription;
 var resu = "";
 subs = this.servicio.grabarItemPedido(itped,this.data.cantit)  
   .pipe(finalize(() => {   
-    this.notiService.showNotification("El Item de Pedido Nro "+itped.nrorenglon+" se ha agregado con éxito("+resu+')','Aceptar','mensaje',500); 
+    //this.notiService.showNotification("El Item de Pedido Nro "+itped.nrorenglon+" se ha agregado con éxito("+resu+')','Aceptar','mensaje',500); 
     subs.unsubscribe();
     this.dialogRef.close({ clicked : "Alta"})
   }))                  
@@ -221,7 +225,7 @@ var subs : Subscription;
 var resu = "";
 subs = this.servicio.updateItemPedido(itped)  
   .pipe(finalize(() => {   
-    this.notiService.showNotification("El Item de Pedido Nro "+itped.nrorenglon+" ha sido modificado con éxito("+resu+')','Aceptar','mensaje',500); 
+    //this.notiService.showNotification("El Item de Pedido Nro "+itped.nrorenglon+" ha sido modificado con éxito("+resu+')','Aceptar','mensaje',500); 
     subs.unsubscribe();
     this.dialogRef.close({ clicked : "Modi"})
   }))                  
@@ -246,17 +250,18 @@ BusqEnLista(){
   
     const datas : intBusqArt = {
       lista       : listaa,
+      nroprov     : nrop,
       Selmult     : 0,           
     }  
    
    
     const dialogConfig = new MatDialogConfig();   
-    dialogConfig.autoFocus = false;
-    dialogConfig.data = datas;
-    dialogConfig.width =  '1000px';         // ancho máximo de la ventana
-    dialogConfig.maxWidth = '95vw';      
-    dialogConfig.height   = '600px';        // altura se ajusta al contenido
-    dialogConfig.panelClass = 'custom-dialog-container';
+    dialogConfig.autoFocus    = false;
+    dialogConfig.data         = datas;
+    dialogConfig.width        = '1000px';         // ancho máximo de la ventana
+    dialogConfig.maxWidth     = '99vw';      
+    dialogConfig.height       = '600px';        // altura se ajusta al contenido
+    dialogConfig.panelClass   = 'custom-dialog-container';
     dialogConfig.disableClose =  false; // opcional según necesidad
     const dialogRef =  this.dialog.open(BusqlistaComponent, dialogConfig);
           dialogRef.afterClosed().subscribe( // 
@@ -265,6 +270,7 @@ BusqEnLista(){
    
                this.formItPed.controls['codigo'].setValue(datas.articulos[0].codigo);
                this.formItPed.controls['descripcion'].setValue(datas.articulos[0].descripcion);
+               
                this.isloading = false;
                this.cdr.detectChanges()
                        }})  

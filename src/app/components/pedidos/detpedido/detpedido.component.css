@@ -19,7 +19,7 @@
 }
 
 .header h4 {
-  background-color: #b6c1dd;
+  background-color: rgb(240, 208, 208);
   padding: 8px 16px;
   border-radius: 4px;
   margin: 0;
@@ -63,7 +63,7 @@
 }
 
 .mat-mdc-header-row {
-  background-color: #b6c1dd;
+  background-color:rgb(240, 208, 208);
   height: 24px;
   font-size: 14px;
   font-weight: 500;
@@ -85,7 +85,7 @@
 }
 
 .mat-mdc-row:nth-child(even) {
-  background-color: #cbd0d8;
+  background-color: rgb(240, 208, 208);
   color: black;
 }
 
@@ -245,7 +245,7 @@
   margin-top: 20px;
   padding: 15px;
   /*background-color: #f5f7fa;*/
-  background-color: #b6c1dd;
+  background-color:rgb(240, 208, 208);
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

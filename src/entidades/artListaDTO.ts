@@ -1,3 +1,5 @@
+import { renpedidoDTO } from "./renpedidoDTO";
+
 export interface artListaDTO {
     // tipo para recibir articulos de lista del proveedor de la API
     codigo        : string;
@@ -25,6 +27,12 @@ export interface artListaDDTO {
 
 export interface intBusqArt {
     lista   : string;
+    nroprov : number;
     Selmult : number; // 0-Simple 1-Multiple
    
+}
+
+export interface selMultB {  // usada para seleccion multiple, para enviar al back a grabar items agregados
+    cantitped    : number;
+    items        : renpedidoDTO[]    
 }

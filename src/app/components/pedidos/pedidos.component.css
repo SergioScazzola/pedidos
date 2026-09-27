@@ -65,9 +65,9 @@
 }
 
 .mat-mdc-row {
-  height: auto;
+  height: 35px; /*auto;*/
   min-height: 10px;
-  font-size: 14px;
+  font-size: 16px;
   transition: background-color 0.2s ease;
 }
 
@@ -145,6 +145,15 @@
   text-align: center;
   white-space: nowrap;
 }
+
+.mat-column-coment {
+  /*padding-left: 10px !important;*/
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+  text-align: left;
+  white-space: nowrap;
+}
 /* Estilos para columnas de acción M, B */
 .mat-column-M,
  .mat-column-B,
@@ -167,8 +176,8 @@
 /* Estilos para botones de acción */
 .action-btn {
   background-color: rgb(130, 130, 141) !important;
-  width: 24px !important;
-  height: 24px !important;
+  width: 35px !important;
+  height: 35px !important;
   padding: 0 !important;
   display: inline-flex !important;
   align-items: center !important;

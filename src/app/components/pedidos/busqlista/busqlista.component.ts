@@ -1,18 +1,23 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { PedidosService } from '../../../../servicios/service';
+import { MatFormField, MatLabel, MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { artListaDDTO, artListaDTO, intBusqArt } from '../../../../entidades/artListaDTO';
-import { forkJoin } from 'rxjs';
+import { finalize, forkJoin, Subscription } from 'rxjs';
 import { NotiserviceService } from '../../../../servicios/notiservice.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { SelecTextDirective } from '../../../Directivas/selectTextDirective';
+import { renpedidoDTO } from '../../../../entidades/renpedidoDTO';
+import { proveedorDTO } from '../../../../entidades/proveedorDTO';
+import { SaltarFocoDirective } from '../../../Directivas/saltarFocoDirective';
 
 @Component({
   selector: 'app-busqlista',
-  imports: [CommonModule,MatTableModule, DecimalPipe, DatePipe, DragDropModule, SelecTextDirective],
+  imports: [CommonModule,MatTableModule,  MatSelectModule,SaltarFocoDirective,
+            DecimalPipe, DatePipe, DragDropModule, SelecTextDirective],
   providers : [DecimalPipe,DatePipe],
   templateUrl: './busqlista.component.html',
   styleUrl: './busqlista.component.css'
@@ -20,6 +25,8 @@ import { SelecTextDirective } from '../../../Directivas/selectTextDirective';
 export class BusqlistaComponent {
   @ViewChild('prefcodigo') inputCod!: ElementRef<HTMLInputElement>;
   @ViewChild('txtdesc')    inputDesc!: ElementRef<HTMLInputElement>;
+  //@ViewChild('mitabla')    mitabla! : ElementRef<HTMLElement>;
+  @ViewChild('mitabla', { read: ElementRef }) mitabla!: ElementRef;
 
   isloading : boolean = true;
   lista     : string; // nombre de lista a buscar
@@ -28,11 +35,14 @@ export class BusqlistaComponent {
 
   cartprov  : artListaDTO[]=[];
   cartprovd : artListaDDTO[]=[];  // con sel para mostrar en html
-  cantitems : number;
+  itSelMult : renpedidoDTO[]=[];
+  cproveedores : proveedorDTO[]=[];
+  cantitems : number = 0;
   itemsSel  : number = 0;  // cantidad de items de lista seleccionados
   selMult   : number = 0;  // 0-Seleccion Simple, 1-Seleccion Multiple
   dataSource = new MatTableDataSource<any>();
   titulo    : string;
+
   
   constructor( private   servicio       : PedidosService,              
                private   router         : Router,
@@ -47,19 +57,27 @@ export class BusqlistaComponent {
    }   
 
    colLista: string[] = ["codigo" , "descripcion", "precio","unidad","moneda","fechaup","sel"];
-   
+
+   /*ngAfterViewInit(){
+    
+    setTimeout(() => {
+      console.log('inputCod:', this.inputCod);
+
+      if (this.inputCod) {
+        this.inputCod.nativeElement.focus();
+    }
+    });
+   }*/
    ngOnInit(){    
    
-
-     this.lista   = this.data.lista;
-    this.codib  = " ";
-    this.descb  = " ";
-    this.titulo = "Seleccionar articulo de lista : "+this.lista;    
-    this.busqEnListaxCod(this.codib)
-    
-     
-     
+      this.lista   = this.data.lista;
+      this.codib  = " ";
+      this.descb  = " ";
+      this.titulo = "Seleccion "+(this.data.Selmult==1?"Múltiple de ":"de ")+"articulo de lista : "+this.lista;    
+      this.busqEnListaxCod(this.codib)
+                                        
    }
+
 
    busqEnListaxCod(codb : string){
         this.cartprov   = [];
@@ -72,7 +90,7 @@ export class BusqlistaComponent {
                 
             this.cantitems = this.cartprov==undefined ? 0 : this.cartprov.length;
             if (this.cantitems==0){
-                     this.notiService.showNotification("No existen articulos con pref. de código "+codb,"Aceptar","mensaje",3000);                     
+                     this.notiService.showNotification("No existen articulos con pref. de código "+codb,"Aceptar","mensaje",3000);                                          
                      this.isloading = false;
                      this.cdr.detectChanges();
              } else {     
@@ -91,8 +109,17 @@ export class BusqlistaComponent {
                     }));
       
                     this.dataSource.data = this.cartprovd;                                        
+                    
                     this.isloading = false;
-                    this.cdr.detectChanges(); // Forzar la detección de cambios
+                    this.cdr.detectChanges();  //Forzar la detección de cambios
+                    /*setTimeout(() => {
+                       console.log('inputCod:', this.inputCod);
+
+                       if (this.inputCod) {
+                           this.inputCod.nativeElement.focus();
+                       }
+                    });*/
+                    
                   }
           });
       
@@ -113,13 +140,13 @@ export class BusqlistaComponent {
                      this.isloading = false;
                      this.cdr.detectChanges();
              } else {     
-                    // mapeo para mostrar "sel"     
+   
                    this.cartprovd = this.cartprov.map((item) => ({
                      codigo      : item.codigo,
                      codbarra    : item.codbarra,
                      descripcion : item.descripcion,
                      precio      : item.precio,
-                     tiva         : item.tiva,
+                     tiva        : item.tiva,
                      unidad      : item.unidad,
                      moneda      : item.moneda,
                      fechaup     : item.fechaup,
@@ -128,7 +155,7 @@ export class BusqlistaComponent {
                     }));
       
                     this.dataSource.data = this.cartprovd;                                        
-                    this.isloading = false;
+                    this.isloading = false;                    
                     this.cdr.detectChanges(); // Forzar la detección de cambios
                   }
           });
@@ -139,7 +166,9 @@ export class BusqlistaComponent {
     this.dialogRef.close({ clicked : "Cancelar"})
 }
 
-
+seleccionoLista(event : any){
+  this.lista = event.value
+}
 ingresoCodigo(prefc : string){
   this.busqEnListaxCod(prefc);
   this.inputDesc.nativeElement.value = ""
@@ -183,13 +212,26 @@ seleccionoFila(codigoSelected: string) {
  aceptarSeleccion(){
   // Filtramos el arreglo de datos original buscando los que tengan sel igual a 1
   const articulosSeleccionados = this.dataSource.data.filter(item => item.sel === 1);
-
+  this.itSelMult = articulosSeleccionados.map((item : artListaDDTO)=> ({
+           nropedido    : 0,
+           nrorenglon   : 0,
+           nroproveedor : this.data.nroprov,
+           codigo       : item.codigo,
+           descripcion  : item.descripcion,
+           cantidad     : 1,
+           coment       : " "
+  }))
   // Cerramos el diálogo y enviamos el estado 'Acepto' junto con la lista de artículos
   this.dialogRef.close({
     clicked: 'Acepto',
-    articulos: articulosSeleccionados
+    articulos: this.itSelMult
   });
  }
-
+consolear(){
+console.log('FOCUS_codigo')
+}
+ consolear1(){
+console.log('FOCUS_descri')
+}
 
 }
