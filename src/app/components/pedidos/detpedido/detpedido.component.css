@@ -18,7 +18,7 @@
   margin-bottom: 1px;
 }
 
-.header h4 {
+.header h6 {
   background-color: rgb(240, 208, 208);
   padding: 8px 16px;
   border-radius: 4px;
@@ -90,7 +90,7 @@
 }
 
 .mat-mdc-row:hover {
-  background-color: #e8edf5;
+  background-color:rgb(240, 208, 208);
 }
 
 /* Estilos para las celdas : arriba, derecha, abajo, izquierda */

@@ -40,7 +40,7 @@ export class PedidosComponent {
     cantitems    : number;  */
   
   
-  colPedidos: string[] = ["nropedido" , "fechaup", "nroproveedor", "proveedor","cantitems","coment","M","B"];
+  colPedidos: string[] = ["nropedido" , "fechaalta","fechaup", "nroproveedor", "proveedor","cantitems","coment","B"];
   
   dataSource = new MatTableDataSource<any>();
   //private filtroInicial : string = "";

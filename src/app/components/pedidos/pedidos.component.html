@@ -28,8 +28,14 @@
         <th mat-header-cell *matHeaderCellDef>Nro</th>
         <td mat-cell *matCellDef="let renPed">{{ renPed.nropedido }}</td>
       </ng-container>
-
-      <!-- Columna Fecha -->
+      
+      <!-- Columna Fecha Alta -->
+      <ng-container matColumnDef="fechaalta">
+        <th mat-header-cell *matHeaderCellDef class="centrado">Fecha Alta</th>
+        <td mat-cell *matCellDef="let renPed">{{  renPed.fechaalta | date : "dd/MM/yyyy"}}</td>
+      </ng-container>
+      <!-- Columna Fecha Update-->
+       
       <ng-container matColumnDef="fechaup">
         <th mat-header-cell *matHeaderCellDef class="centrado">Fecha Act</th>
         <td mat-cell *matCellDef="let renPed">{{  renPed.fechaup | date : "dd/MM/yyyy"}}</td>
@@ -43,7 +49,7 @@
 
       <!-- Columna Nombre de Proveedor -->
       <ng-container matColumnDef="proveedor">
-        <th mat-header-cell *matHeaderCellDef>Proveedor</th>
+        <th mat-header-cell *matHeaderCellDef class="centrado">Proveedor</th>
         <td mat-cell *matCellDef="let renPed">{{ renPed.proveedor }}</td>
       </ng-container>
 
@@ -60,7 +66,7 @@
       </ng-container>
 
       <!-- Columna Modificar -->
-      <ng-container matColumnDef="M">
+      <!--ng-container matColumnDef="M">
         <th mat-header-cell *matHeaderCellDef>Mod</th>
         <td mat-cell *matCellDef="let renPed">
           <div class="text-center">
@@ -74,7 +80,7 @@
             </button>
           </div>
         </td>
-      </ng-container>
+      </ng-container-->
 
       <!-- Columna Borrar -->
       <ng-container matColumnDef="B">
@@ -85,7 +91,7 @@
               mat-icon-button
               class="action-btn"
               title="borrar pedido"
-              (click)="borrarPedido(renPed.nropedido, renPed.proveedor)"
+              (click)="borrarPedido(renPed.nropedido, renPed.proveedor); $event.stopPropagation()"
             >
               <i class="bi bi-trash-fill"></i>
             </button>
@@ -95,7 +101,8 @@
 
       <!-- Definición de filas -->
       <tr mat-header-row *matHeaderRowDef="colPedidos; sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; let index; columns: colPedidos"></tr>
+      <tr mat-row *matRowDef="let row; let index; columns: colPedidos"
+           (click)="modificarDetallePedido(row.nropedido, row.nroproveedor,row.proveedor)"></tr>
     </table>
   </div>
 </div>

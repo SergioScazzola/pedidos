@@ -76,6 +76,9 @@ public getMaxDetPedido(nroped : number){
   }
 
 
+public elimItemPedido(idpedido: number,nroren : number, cantit : number){
+    return this.http.delete(this.apiUrl + `pedidos/delitem?idpedido=` +idpedido+`&nroitem=`+nroren+`&cantitem=`+cantit);
+}
 
 
  public grabarItemPedido(itpedido : renpedidoDTO,cantit : number) {

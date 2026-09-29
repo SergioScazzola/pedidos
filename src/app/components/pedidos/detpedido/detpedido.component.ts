@@ -51,6 +51,7 @@ export class DetpedidoComponent {
   nropedido     : number;
   nroprove      : number;
   nomprov       : string;
+  mensitems     : string = "";
   isloading     : boolean = true;
 
 
@@ -65,7 +66,7 @@ export class DetpedidoComponent {
                               ) {       
    }   
 
-   colDetPedido: string[] = ["nropedido" , "nrorenglon", "proveedor", "codigo","descripcion","cantidad","coment","M","B"];
+   colDetPedido: string[] = ["nropedido" , "nrorenglon", "proveedor", "codigo","descripcion","cantidad","coment","B"];
    
    ngOnInit(){    
    
@@ -123,6 +124,7 @@ export class DetpedidoComponent {
                           this.dataSource.filter = this.filtro;                                                                       
                           this.inputRef.nativeElement.value = this.filtro;//setAttribute('value', this.filtro);
                 }  
+              this.mensitems = " - Cant.Items "+this.cdisppedido.length;
               this.isloading = false;
               this.cdr.detectChanges(); // Forzar la detección de cambios
             }
@@ -142,7 +144,7 @@ export class DetpedidoComponent {
       accion       : "A"
     }  
    
-   
+  
     const dialogConfig = new MatDialogConfig();   
     dialogConfig.autoFocus = false;
     dialogConfig.data = datas;
@@ -184,16 +186,16 @@ export class DetpedidoComponent {
             (datas:any) => {
               if (datas.clicked === 'Acepto' && datas.articulos){                   
                // me devuelve uno ó mas items en datas.articulos -> seleccion multiple
-               this.cselDestino = datas.articulos.map((item : artListaDDTO) => ({
+               this.cselDestino = datas.articulos.map((item : artListaDDTO,index : number) => ({
                   nropedido    : this.nropedido,
-                  nrorenglon   : 0,  // el nro de renglon lo pone el back
+                  nrorenglon   : index+1+this.ultitem,  // lo envio con el nro. correcto
                   nroproveedor : this.nroprove,
-                  codigo      : item.codigo,
-                  descripcion : item.descripcion,
-                  cantidad    : 1,
-                  coment      : ""}))
+                  codigo       : item.codigo,
+                  descripcion  : item.descripcion,
+                  cantidad     : 1,
+                  coment       : ""}))
                 const selmul : selMultB = {
-                  cantitped  : this.ultitem,
+                  cantitped  : this.cdetpedido.length,  // cantidad de items que tenia el pedido, para actualizar cantidad
                   items      : this.cselDestino                  
                 }
                 var subs : Subscription;
@@ -254,14 +256,29 @@ modificarItemPedido( nroped : number, nroren : number){
 }
 
 eliminarItemPedido( nroped : number, nroren : number){
-
+   var subs : Subscription;
+    var resu : number;
+     this.sinoServicio.abrirSiNoDialogo("Confirmación",
+                              "¿ Está seguro de quiere borrar el Item de pedido Nro.: "+nroren+" ?")
+      .then(result => {
+       if (result) {                              
+         subs = this.servicio.elimItemPedido(nroped,nroren,this.cdetpedido.length)
+          .pipe(finalize(()=> {         
+            subs.unsubscribe(); 
+            this.notiServicio.showNotification("Se ha borrado el Item de pedido Nro.: "+nroren+" ("+resu+") ",
+                                            "Aceptar","mensaje",3000);
+                this.leerDetallePedido(nroped) // refrescar detalle de pedido
+          }))
+          .subscribe((datas : any): void => {
+                resu = datas });
+      }})  
 }
 
 generarPedidoPDF() : void {
    var filas                 : any;
    var colspdf : any = [
-     { header: 'NroIt', dataKey: 'nrorenglon' },
-     { header: 'Proveedor', dataKey: 'nprov' },
+     //{ header: 'NroIt', dataKey: 'nrorenglon' },
+     this.nroprove===0?{ header: 'Proveedor', dataKey: 'nprov' }:"",
      { header: 'Código', dataKey: 'codigo' },     
      { header: 'Descripción', dataKey: 'ntipo' },
      { header: 'Cantidad', dataKey: 'cantidad' },
@@ -279,8 +296,8 @@ generarPedidoPDF() : void {
        const totalPagesExp = '{total_pages_count_string}';
                 
        filas = this.cdisppedido.map((item)=> [
-         item.nrorenglon,
-         item.proveedor,
+         //item.nrorenglon,
+         this.nroprove===0?item.proveedor:"",
          item.codigo,
          item.descripcion,
          item.cantidad,       
@@ -297,7 +314,7 @@ generarPedidoPDF() : void {
           headStyles: { fillColor: [63, 81, 181], halign: 'center' },
           startY:  25,   // 25,  Espacio debajo del título
           columnStyles: {
-             nrorenglon        : { halign: 'center' },
+             //nrorenglon        : { halign: 'center' },
              proveedor         : { halign: 'center' },                                                        
              codigo            : { halign: 'center' },                  
              descripcion       : { halign: 'center' },
@@ -335,6 +352,9 @@ generarPedidoPDF() : void {
        doc.text(`Fecha: ${fechaStr}`, doc.internal.pageSize.getWidth() - 10, 10, { align: 'right' });
        //doc.setFontSize(8);
        doc.text(text, pageSize.width - 10, 15, { align: 'right' });
+       const cantitems = "Cant.Items : "+this.cdetpedido.length;
+       doc.text(cantitems, pageSize.width - 10, 22, { align: 'right' });
+
      }
       doc.save('Pedido_A_Proveedor_'+this.datepipe.transform(new Date(),"dd/MM/yyyy")+'.pdf');       
       

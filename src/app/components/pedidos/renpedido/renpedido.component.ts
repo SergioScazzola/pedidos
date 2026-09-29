@@ -74,6 +74,7 @@ export class RenpedidoComponent {
  itpedido     : renpedidoDTO;
  formItPed    : FormGroup;
  isloading    : boolean = true;
+ maxit        : number;
  leerArtic    : number = 0;
  itemSel      : renpedidoDTO[]=[];
  
@@ -102,7 +103,7 @@ export class RenpedidoComponent {
             this.cproveedores      =  res2.proveed           
       
             if (this.cproveedores!==null && this.cproveedores.length>0){                  
-                this.operacion = "Agregar Item al Pedido Nro. "+this.data.nropedido; ;            
+                this.operacion = "Agregar Item "+this.data.nrorenglon+" al Pedido Nro. "+this.data.nropedido; ;            
                 this.prepararAlta();    
                 this.isloading = false;
                 this.cdr.detectChanges()
@@ -200,7 +201,7 @@ var itped : renpedidoDTO = {
  
 var subs : Subscription;
 var resu = "";
-subs = this.servicio.grabarItemPedido(itped,this.data.cantit)  
+subs = this.servicio.grabarItemPedido(itped,this.data.cantit)// envio cantit para actualizar en pedidos  
   .pipe(finalize(() => {   
     //this.notiService.showNotification("El Item de Pedido Nro "+itped.nrorenglon+" se ha agregado con éxito("+resu+')','Aceptar','mensaje',500); 
     subs.unsubscribe();
