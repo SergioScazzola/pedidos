@@ -8,7 +8,7 @@ import { NotiserviceService } from '../../../servicios/notiservice.service';
 import { finalize, forkJoin, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatTableModule,MatTableDataSource } from '@angular/material/table';
-
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { intCabPedido, pedidoDTO } from '../../../entidades/pedidoDTO';
@@ -28,20 +28,21 @@ export class PedidosComponent {
   
   public   filtro    : string;
   private  maxPedido : number;
-  
+  public   esMovil   : boolean = false;
   public cpedidos    : pedidoDTO[]=[];
   formPed            : boolean;
  
-  /*    nropedido    : number;
-    fechaalta    : Date;
-    fechaup      : Date;
-    nroproveedor : number;
-    proveedor    : string;
-    cantitems    : number;  */
+
   
   
   colPedidos: string[] = ["nropedido" , "fechaalta","fechaup", "nroproveedor", "proveedor","cantitems","coment","B"];
-  
+  colPedidosMovil = [
+  'nropedido',
+  'fechaalta',
+  'proveedor',
+  'cantitems',
+  'B'
+  ];
   dataSource = new MatTableDataSource<any>();
   //private filtroInicial : string = "";
 
@@ -50,8 +51,19 @@ export class PedidosComponent {
                private rutaActiva     : ActivatedRoute,
                public  dialog         : MatDialog,
                private sinoServicio   : SinoService,
+               private breakpointObserver: BreakpointObserver,
                private notiServicio   : NotiserviceService
-                              ) { 
+                              ) 
+   { this.breakpointObserver // detecta si es movil : celular o tablet
+      .observe([
+        Breakpoints.Handset,
+        Breakpoints.Tablet
+      ])
+      .subscribe(result => {
+
+        this.esMovil = result.matches;
+
+    });
    
    }     
 ngOnInit(){    

@@ -10,7 +10,7 @@
            <input #filtroInput (keyup)="aplicarFiltro(filtroInput.value)" placeholder="Filtrar por descripción">
         </div>   
         <button 
-                [disabled]="cdetpedido===undefined || cdetpedido.length===0"
+                [disabled]="cdetpedido===undefined || cdetpedido===null"
                 mat-icon-button
                 class="action-btn"
                 title="imprimir Pedido"
@@ -37,7 +37,7 @@
     
 
      <!-- Sección de tabla con scroll -->
-     @if (cantitems!==0) {
+     @if (cdetpedido!==undefined && cdetpedido!==null) {
      <div class="table-container" style="overflow-x: auto">
        <table
            mat-table

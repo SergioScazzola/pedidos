@@ -95,13 +95,13 @@ export class DetpedidoComponent {
       this.ultitem       = res.maxitem; // nro.de ultimo item del pedido
 
     
-      this.cantitems = this.cdetpedido==undefined ? 0 : this.cdetpedido.length;
-           if (this.cantitems==0){
+     
+           if (this.cdetpedido===undefined || this.cdetpedido===null) {
                this.notiServicio.showNotification("No hay items para el pedido "+this.nropedido,"Aceptar","mensaje",3000);
                this.ultitem = 0;  
-
                this.isloading = false;
-               this.cdr.detectChanges();
+               this.cdr.detectChanges(); // Forzar la detección de cambios
+
             } else {     
               // mapeo para mostrar el nombre del proveedor     
              this.cdisppedido = this.cdetpedido.map((item) => ({
