@@ -1,0 +1,70 @@
+@if (!isloading){
+<div class="barcodes-container">
+    <!-- Sección superior fija -->
+    <div class="fixed-section">
+      <div class="header">
+        <h6>Impresión de Códigos de Barras
+        </h6>   
+        
+         <div class="col-auto">
+           <mat-form-field class="w-100" appearance="fill">
+             <mat-label>Elija un Proveedor</mat-label>
+             <mat-select  formControlName="nroproveedor"
+                [disabled]="this.cproveedores===undefined || this.cproveedores===null"
+             (selectionChange)="onSelectionProv($event.value)" >
+               @for (prov of this.cproveedores; track prov.Idproveedor){
+                <mat-option [value]="prov.Idproveedor">                 
+                  {{ prov.nombre+" - "+prov.Idproveedor }}                 
+                </mat-option>
+                }
+          </mat-select>
+        </mat-form-field>
+      </div>  
+          <button class="btn btn-sm btn-success  add-button"
+              [disabled]="nroprove===0"
+              (click)="seleccionarArticulos()">
+          <i class="bi bi-plus-circle me-1"></i>Seleccionar Artículos
+          </button>
+            <button class="btn btn-sm btn-secondary add-button" (click)="Volver()">
+            <i class="bi bi-arrow-left me-1"></i>Volver
+          </button>
+      
+      </div>
+    </div>
+    <!-- Sección de tabla con scroll -->
+    @if (cselCodBar!==undefined && cselCodBar!==null) {
+     <div class="table-container" style="overflow-x: auto">
+       <table
+           mat-table
+           class="mat-elevation-z8 tabla-fija"
+           [dataSource]="this.cselCodBar">
+
+    
+      <!-- Columna Nro.Proveedor -->
+      <ng-container matColumnDef="nroproveedor">
+        <th mat-header-cell *matHeaderCellDef >Nro.Proveedor</th>
+        <td mat-cell *matCellDef="let renCod" >
+       {{ renCod.nroproveedor }}</td>
+      </ng-container>
+
+      <!-- Columna Código Proveedor -->
+      <ng-container matColumnDef="codigo">
+        <th mat-header-cell *matHeaderCellDef>Código Proveedor</th>
+        <td mat-cell *matCellDef="let renCod">
+          {{ renCod.codigo }}</td>
+      </ng-container>
+       
+      <!-- Columna descripcion -->
+      <ng-container matColumnDef="descripcion">
+        <th mat-header-cell *matHeaderCellDef class="centrado">Descripción</th>
+        <td mat-cell *matCellDef="let renCod">{{ renCod.descripcion }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="colArticulos; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: colArticulos">
+      </tr>    
+    </table>  
+   </div>
+   }
+   </div>
+   }

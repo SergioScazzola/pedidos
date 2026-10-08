@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { proveedorDTO} from '../entidades/proveedorDTO';
-import { artListaDTO } from '../entidades/artListaDTO';
+import { artListaDTO, selCodBar } from '../entidades/artListaDTO';
 import { pedidoDTO } from '../entidades/pedidoDTO';
 import { renpedidoDTO } from '../entidades/renpedidoDTO';
 import { selMultB } from '../entidades/artListaDTO';
@@ -15,11 +15,21 @@ import { ConfigService } from './config.service';
 
 export class PedidosService {
   private apiUrl    : string;
+
+  private artPadaCodificar : selCodBar[] = [];  // para imprimir codigos de barra
   
   constructor(private http: HttpClient, private configService: ConfigService) {
     this.apiUrl = this.configService.getApiUrl();
   }
-         
+    
+  public setArticulosParaCodificar(articulos: selCodBar[]) {
+    this.artPadaCodificar = articulos;
+  }
+
+  public getArticulosParaCodificar(): selCodBar[] {
+    return this.artPadaCodificar;
+  }
+  
   public getProveedores(){    
     return this.http.get<proveedorDTO[]>(this.apiUrl+`proveedores`);    
   }

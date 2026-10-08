@@ -32,6 +32,13 @@ export interface intBusqArt {
    
 }
 
+export interface selCodBar {  // usada para seleccion multiple en impresion de cod. de barra
+    nroproveedor : number;
+    codigo       : string;   
+    descripcion  : string;
+}
+
+
 export interface selMultB {  // usada para seleccion multiple, para enviar al back a grabar items agregados
     cantitped    : number;
     items        : renpedidoDTO[]    
