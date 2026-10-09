@@ -21,9 +21,16 @@ export class PedidosService {
   constructor(private http: HttpClient, private configService: ConfigService) {
     this.apiUrl = this.configService.getApiUrl();
   }
-    
+   
+  public borrarArticulosParaCodificar() {
+    this.artPadaCodificar = [];
+  }
   public setArticulosParaCodificar(articulos: selCodBar[]) {
-    this.artPadaCodificar = articulos;
+    var arti : selCodBar;
+    for (let i = 0; i < articulos.length; i++) {
+      arti = articulos[i];
+      this.artPadaCodificar.push(arti);
+    }
   }
 
   public getArticulosParaCodificar(): selCodBar[] {

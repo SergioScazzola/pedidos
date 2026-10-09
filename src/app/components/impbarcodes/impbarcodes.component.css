@@ -1,0 +1,138 @@
+/* Contenedor principal */
+.barcodes-container {
+  width: 100%;
+  height: calc(100vh - 70px); /* Restar altura de navbar */
+  display: flex;
+  flex-direction: column;
+  padding: 1px;
+  margin-top: 15px;
+  overflow: hidden;
+}
+
+
+/* Cabecera con título y botón */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1px;
+}
+
+.header h6 {
+  background-color: rgb(240, 208, 208);
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-button {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  padding: 6px 15px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.table-container {
+  flex: 1;
+  height: 350px;
+  overflow-y: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+
+/* Estilos de la tabla
+.mat-mdc-table {
+  table-layout: fixed;
+  width: 100%;
+}*/
+
+.tabla-fija {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.mat-mdc-header-row {
+  background-color:rgb(240, 208, 208);
+  height: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.mat-mdc-row {
+  height: auto;
+  min-height: 10px;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.mat-mdc-row:nth-child(odd) {
+  background-color: white;
+  color: black;
+}
+
+.mat-mdc-row:nth-child(even) {
+  background-color: rgb(240, 208, 208);
+  color: black;
+}
+
+.mat-mdc-row:hover {
+  background-color:rgb(240, 208, 208);
+}
+
+/* Estilos para las celdas : arriba, derecha, abajo, izquierda */
+.mat-mdc-cell,
+.mat-mdc-header-cell {
+  padding: 0;
+}
+
+/* Asegurar que los encabezados no se truncan */
+.mat-mdc-header-cell {
+  white-space: nowrap;
+  overflow: visible !important;
+  text-overflow: clip;
+  padding: 0 ;
+}
+
+/* Ancho de columnas */
+
+
+.mat-column-nroproveedor {
+  /*padding-left: 10px !important;*/
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+
+.mat-column-codigo {
+ width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.mat-column-descripcion
+ {
+ width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+  text-align: left;
+  white-space: nowrap;
+}
+

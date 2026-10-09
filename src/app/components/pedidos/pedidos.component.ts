@@ -163,6 +163,9 @@ ngOnInit(){
     }
    }
 
+   imprimirCodigos()  {
+    this.router.navigate(['/impCodigos']);
+   }
 
   aplicarFiltro(valor : string)  {
     this.dataSource.filter = valor.trim().toLowerCase();

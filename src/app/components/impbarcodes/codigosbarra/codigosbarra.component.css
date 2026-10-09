@@ -1,0 +1,49 @@
+.hoja {
+  width: 210mm;
+  min-height: 297mm;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 5mm;
+  padding: 10mm;
+
+  box-sizing: border-box;
+}
+
+.etiqueta {
+  height: 55mm;
+
+  border: 1px solid #000;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 3mm;
+
+  box-sizing: border-box;
+}
+
+.descripcion {
+  font-weight: bold;
+  font-size: 12px;
+  text-align: center;
+}
+
+.medida {
+  font-size: 11px;
+  margin-bottom: 3mm;
+}
+
+.barcode {
+  width: 100%;
+  max-width: 55mm;
+  height: 18mm;
+}
+
+.codigo {
+  font-size: 10px;
+  margin-top: 1mm;
+}

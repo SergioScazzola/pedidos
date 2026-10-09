@@ -38,17 +38,21 @@ export class ImpbarcodesComponent {
         prove  : this.servicio.getProveedores()
       }).subscribe(res => {          
         this.cproveedores  = res.prove;
+
         this.isloading      = false;
         this.cdr.detectChanges();
       })       
  }
-  onSelectionProv(event : any) {
-    this.nroprove = event;
+
+  onSelectionProv(nroprov : number) {
+    this.nroprove = nroprov;
+   console.log("onSelectionProv nroprove: ",this.nroprove);
   }
   
   seleccionarArticulos() {
    
      // llama al componente "busqlista" para agregar uno ó mas items de pedido
+     this.cselCodBar = [];
     const indp = this.cproveedores.findIndex(p=>p.Idproveedor===this.nroprove);
     const datas : intBusqArt = {
       lista    : this.cproveedores[indp].nomlista,
@@ -86,7 +90,11 @@ export class ImpbarcodesComponent {
        this.router.navigate(['/pedidos','']);
   }
               
-                 
+ mostrarCodBarras(){
+  this.servicio.borrarArticulosParaCodificar(); // borra para la nueva seleccion
+  this.servicio.setArticulosParaCodificar(this.cselCodBar);
+  this.router.navigate(['/codigosbarra']);
+  }                
                 
               
 

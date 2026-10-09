@@ -1,1 +1,24 @@
-<p>codigosbarra works!</p>
+<div class="hoja">
+
+   @for (arti of cselCodBar; track arti.codigo; let i = $index) {
+
+     <div class="etiqueta">
+
+       <div>{{ arti.descripcion }}</div>
+
+       <svg [id]="'barcode-' + i"></svg>
+
+       <div>{{ arti.codigo }}</div> 
+     </div>
+
+    }
+</div>
+<div>
+  <button class="btn btn-sm btn-outline-primary me-5"    
+              (click)="imprimir()">Imprimir
+  </button>
+  <button class="btn btn-sm btn-outline-secondary"     
+              (click)="Volver()">Volver
+            
+  </button>
+</div>       

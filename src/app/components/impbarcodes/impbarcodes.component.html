@@ -18,10 +18,15 @@
                 </mat-option>
                 }
           </mat-select>
-        </mat-form-field>
-      </div>  
+          </mat-form-field>
+        </div>          
+         <button class="btn btn-sm btn-warning  add-button"
+              [disabled]="this.nroprove===0 || cselCodBar===undefined || cselCodBar===null"
+              (click)="mostrarCodBarras()">
+          <i class="bi bi-plus-circle me-1"></i>Mostrar Códigos de Barras
+          </button>
           <button class="btn btn-sm btn-success  add-button"
-              [disabled]="nroprove===0"
+              [disabled]="this.nroprove===0"
               (click)="seleccionarArticulos()">
           <i class="bi bi-plus-circle me-1"></i>Seleccionar Artículos
           </button>
