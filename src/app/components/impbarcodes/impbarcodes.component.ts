@@ -91,7 +91,7 @@ export class ImpbarcodesComponent {
   }
               
  mostrarCodBarras(){
-  this.servicio.borrarArticulosParaCodificar(); // borra para la nueva seleccion
+  //this.servicio.borrarArticulosParaCodificar();  borra para la nueva seleccion
   this.servicio.setArticulosParaCodificar(this.cselCodBar);
   this.router.navigate(['/codigosbarra']);
   }                
