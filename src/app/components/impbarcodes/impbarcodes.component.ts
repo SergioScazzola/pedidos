@@ -8,7 +8,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { BusqlistaComponent } from '../pedidos/busqlista/busqlista.component';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-impbarcodes',
@@ -23,6 +23,8 @@ export class ImpbarcodesComponent {
  cproveedores   : proveedorDTO[]=[];
  cselMultiple   : artListaDDTO[]=[]; // para recibir de "busqlista"
  cselCodBar     : selCodBar[]=[];   //  para imprimir codigos de barra
+
+ dataSource = new MatTableDataSource<any>();
   constructor( private   servicio       : PedidosService,                           
                private   router         : Router,
                private   cdr            : ChangeDetectorRef,
@@ -34,6 +36,7 @@ export class ImpbarcodesComponent {
    colArticulos: string[] = ["nroproveedor" , "codigo" , "descripcion"];
 
  ngOnInit(){   
+   this.servicio.borrarArticulosParaCodificar();  // borra para la nueva seleccion
    forkJoin({       
         prove  : this.servicio.getProveedores()
       }).subscribe(res => {          
@@ -79,6 +82,8 @@ export class ImpbarcodesComponent {
                   codigo       : item.codigo,
                   descripcion  : item.descripcion,
                }));
+               this.servicio.setArticulosParaCodificar(this.cselCodBar);
+               this.dataSource.data = this.servicio.getArticulosParaCodificar();
                this.isloading = false;
                this.cdr.detectChanges();
               }

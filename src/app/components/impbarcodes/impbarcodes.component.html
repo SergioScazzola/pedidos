@@ -37,12 +37,12 @@
       </div>
     </div>
     <!-- Sección de tabla con scroll -->
-    @if (cselCodBar!==undefined && cselCodBar!==null) {
+    @if (dataSource!==undefined && dataSource!==null) {
      <div class="table-container" style="overflow-x: auto">
        <table
            mat-table
            class="mat-elevation-z8 tabla-fija"
-           [dataSource]="this.cselCodBar">
+           [dataSource]="this.dataSource">
 
     
       <!-- Columna Nro.Proveedor -->
