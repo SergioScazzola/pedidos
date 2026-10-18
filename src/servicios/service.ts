@@ -53,16 +53,10 @@ export class PedidosService {
   public getArticulosListaxDesc(lista : string, desc : string){       
       return this.http.get<artListaDTO[]>(this.apiUrl+`listasxDes?lis=`+lista+`&&des=`+desc);    
   }
-
-  /* Articulos de ARTICULOS
-  public getArticulosxCod(codi : string){   
-        return this.http.get<articuloDTO[]>(this.apiUrl+`articulosxCod?pcod=`+codi);    
-  }
-
-  public getArticulosxDesc(desc : string){   
-    return this.http.get<articuloDTO[]>(this.apiUrl+`articulosxDesc?desc=`+desc);    
-  }*/
- 
+/*  @RequestMapping(value = "/exactaxcod", params = {"lis", "cod"})*/
+  public getArticuloExactaxCod(lista : string, codi : string){
+      return this.http.get<artListaDTO>(this.apiUrl+`exactaxcod?lis=`+lista+`&&cod=`+codi);    
+  } 
  
 
   public getPedidos() {

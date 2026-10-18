@@ -12,6 +12,19 @@ export interface artListaDTO {
     fechaup       : Date;  
 }
 
+export interface artListaCBar {
+   nroprov       : number;
+   proveedor     : string;
+   codigo        : string;
+   codbarra      : string;
+   descripcion   : string;
+   precio        : number;
+   tiva          : number;
+   unidad        : string;
+   moneda        : string;
+   fechaup       : Date;   
+}
+
 export interface artListaDDTO {
     // tipo para mostrar en html con campo "sel" para seleccionar
     codigo        : string;

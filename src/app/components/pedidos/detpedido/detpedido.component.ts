@@ -20,6 +20,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { artListaDDTO, intBusqArt, selMultB } from '../../../../entidades/artListaDTO';
 import { BusqlistaComponent } from '../busqlista/busqlista.component';
 import { finalize, Subscription } from 'rxjs';
+import { DetXCodbarraComponent } from '../det-xcodbarra/det-xcodbarra.component';
 
 
 @Component({
@@ -214,6 +215,50 @@ export class DetpedidoComponent {
               
 
   }
+
+   agregarXCodBar() {   
+     // llama al componente "det-xcodbarra" para agregar uno ó mas items de pedido          
+    const dialogConfig = new MatDialogConfig();   
+    dialogConfig.autoFocus    = false;    
+    dialogConfig.width        = '1000px';         // ancho máximo de la ventana
+    dialogConfig.maxWidth     = '95vw';      
+    dialogConfig.height       = '600px';        // altura se ajusta al contenido
+    dialogConfig.panelClass   = 'custom-dialog-container';
+    dialogConfig.disableClose =  false; // opcional según necesidad
+    const dialogRef =  this.dialog.open(DetXCodbarraComponent, dialogConfig);
+          dialogRef.afterClosed().subscribe( // 
+            (datas:any) => {
+              if (datas.clicked === 'Acepto' && datas.articulos){                   
+               // me devuelve uno ó mas items en datas.articulos -> seleccion multiple
+               this.cselDestino = datas.articulos.map((item : artListaDDTO,index : number) => ({
+                  nropedido    : this.nropedido,
+                  nrorenglon   : index+1+this.ultitem,  // lo envio con el nro. correcto
+                  nroproveedor : this.nroprove,
+                  codigo       : item.codigo,
+                  descripcion  : item.descripcion,
+                  cantidad     : 1,
+                  coment       : ""}))
+                const selmul : selMultB = {
+                  cantitped  : this.cdetpedido.length,  // cantidad de items que tenia el pedido, para actualizar cantidad
+                  items      : this.cselDestino                  
+                }
+                var subs : Subscription;
+                   var resu = "";
+                   subs = this.servicio.grabarSelMultiple(selmul)  
+                           .pipe(finalize(() => {                               
+                               subs.unsubscribe();
+                               this.leerDetallePedido(this.nropedido);
+                               this.isloading = false;
+                               this.cdr.detectChanges()
+                               }))                  
+                          .subscribe((data : any): void => {resu= data});   
+                              }   
+                 
+                } )             
+              
+
+  }
+
   aplicarFiltro(valor : string)  {
   this.dataSource.filter = valor.trim().toLowerCase();   
   }
