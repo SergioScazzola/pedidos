@@ -94,9 +94,7 @@ export class DetpedidoComponent {
       this.cdetpedido    = res.detalle;
       this.cproveedores  = res.prove;
       this.ultitem       = res.maxitem; // nro.de ultimo item del pedido
-
     
-     
            if (this.cdetpedido===undefined || this.cdetpedido===null) {
                this.notiServicio.showNotification("No hay items para el pedido "+this.nropedido,"Aceptar","mensaje",3000);
                this.ultitem = 0;  
@@ -239,7 +237,7 @@ export class DetpedidoComponent {
                   cantidad     : 1,
                   coment       : ""}))
                 const selmul : selMultB = {
-                  cantitped  : this.cdetpedido.length,  // cantidad de items que tenia el pedido, para actualizar cantidad
+                  cantitped  : this.ultitem,  // cantidad de items que tenia el pedido, para actualizar cantidad
                   items      : this.cselDestino                  
                 }
                 var subs : Subscription;
