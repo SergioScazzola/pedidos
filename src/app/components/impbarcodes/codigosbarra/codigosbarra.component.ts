@@ -33,8 +33,8 @@ export class CodigosbarraComponent {
             width: 2,
             height: 40,
             displayValue: true,
-            fontSize: 14,
-            margin: 5
+            fontSize: 12,
+            margin: 1
          });    
         });
 
