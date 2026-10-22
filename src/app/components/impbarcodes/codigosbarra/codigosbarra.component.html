@@ -1,3 +1,12 @@
+<div>
+  <button class="btn btn-sm btn-outline-primary me-5"    
+              (click)="imprimir()">Imprimir
+  </button>
+  <button class="btn btn-sm btn-outline-secondary"     
+              (click)="Volver()">Volver
+            
+  </button>
+</div>  
 <div class="hoja">
 
    @for (arti of cselCodBar; track arti.codigo; let i = $index) {
@@ -13,12 +22,4 @@
 
     }
 </div>
-<div>
-  <button class="btn btn-sm btn-outline-primary me-5"    
-              (click)="imprimir()">Imprimir
-  </button>
-  <button class="btn btn-sm btn-outline-secondary"     
-              (click)="Volver()">Volver
-            
-  </button>
-</div>       
+     

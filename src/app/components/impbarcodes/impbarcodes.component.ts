@@ -20,9 +20,9 @@ export class ImpbarcodesComponent {
 
  isloading      : boolean = true;
  nroprove       : number;
- cproveedores   : proveedorDTO[]=[];
+ cproveedores   : proveedorDTO[];
  cselMultiple   : artListaDDTO[]=[]; // para recibir de "busqlista"
- cselCodBar     : selCodBar[]=[];   //  para imprimir codigos de barra
+ cselCodBar     : selCodBar[];   //  para imprimir codigos de barra
 
  dataSource = new MatTableDataSource<any>();
   constructor( private   servicio       : PedidosService,                           
@@ -36,15 +36,16 @@ export class ImpbarcodesComponent {
    colArticulos: string[] = ["nroproveedor" , "codigo" , "descripcion"];
 
  ngOnInit(){   
-   this.servicio.borrarArticulosParaCodificar();  // borra para la nueva seleccion
-   forkJoin({       
+   if (this.cproveedores===null ||  this.cproveedores===undefined){
+     forkJoin({       
         prove  : this.servicio.getProveedores()
       }).subscribe(res => {          
         this.cproveedores  = res.prove;
 
         this.isloading      = false;
         this.cdr.detectChanges();
-      })       
+      })   
+    }    
  }
 
   onSelectionProv(nroprov : number) {
@@ -55,7 +56,7 @@ export class ImpbarcodesComponent {
   seleccionarArticulos() {
    
      // llama al componente "busqlista" para agregar uno ó mas items de pedido
-     this.cselCodBar = [];
+    // this.cselCodBar = [];
     const indp = this.cproveedores.findIndex(p=>p.Idproveedor===this.nroprove);
     const datas : intBusqArt = {
       lista    : this.cproveedores[indp].nomlista,
@@ -101,7 +102,13 @@ export class ImpbarcodesComponent {
   this.router.navigate(['/codigosbarra']);
   }                
                 
-              
+ borrarSeleccion(){
+   this.servicio.borrarArticulosParaCodificar();  // borra para la nueva seleccion
+   this.cselCodBar = [];
+   this.dataSource.data = this.cselCodBar;
+   this.isloading      = false;
+   this.cdr.detectChanges();
+ }             
 
   
 }

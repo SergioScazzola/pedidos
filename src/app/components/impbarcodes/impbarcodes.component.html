@@ -19,7 +19,8 @@
                 }
           </mat-select>
           </mat-form-field>
-        </div>          
+        </div>   
+               
          <button class="btn btn-sm btn-warning  add-button"
               [disabled]="this.nroprove===0 || cselCodBar===undefined || cselCodBar===null"
               (click)="mostrarCodBarras()">
@@ -30,6 +31,11 @@
               (click)="seleccionarArticulos()">
           <i class="bi bi-plus-circle me-1"></i>Seleccionar Artículos
           </button>
+          <button class="btn btn-sm btn-danger  add-button"
+              [disabled]="this.nroprove===0 || cselCodBar===undefined || cselCodBar===null"
+              (click)="borrarSeleccion()">
+          <i class="bi bi-plus-circle me-1"></i>Borrar Seleccion
+          </button> 
             <button class="btn btn-sm btn-secondary add-button" (click)="Volver()">
             <i class="bi bi-arrow-left me-1"></i>Volver
           </button>
